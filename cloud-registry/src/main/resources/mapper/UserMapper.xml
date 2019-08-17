@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>   
+<!DOCTYPE mapper   PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"  "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.test.registry.dao.UserDaoI">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.test.registry.entity.User">
+		<id column="id" property="id"/>
+		<id column="userName" property="user_name"/>
+		<id column="password" property="password"/>
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		id,user_name,password
+	</sql>
+	
+	<select id="selectById" resultType="com.test.registry.entity.User">
+		select id,user_name as userName,password from user where id = #{id}
+	</select>
+	
+
+</mapper> 
