@@ -5,5 +5,7 @@ import com.test.registry.entity.User;
 public interface UserServiceI {
 	
 	public User selectById(Integer id);
+	
+	public boolean login(User user);
 
 }

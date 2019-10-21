@@ -18,5 +18,11 @@
 		select id,user_name as userName,password from user where id = #{id}
 	</select>
 	
+	<select id="login" resultType="com.test.registry.entity.User">
+		select id,user_name as userName,password from user 
+		where user_name = #{userName} 
+		and password = #{password} 
+	</select>
+	
 
 </mapper> 

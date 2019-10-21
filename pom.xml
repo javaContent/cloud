@@ -57,5 +57,6 @@
     	<module>cloud-eureka</module>
     	<module>cloud-registry</module>
     	<module>cloud-configserver</module>
+    	<module>cloud-system</module>
     </modules>
 </project>

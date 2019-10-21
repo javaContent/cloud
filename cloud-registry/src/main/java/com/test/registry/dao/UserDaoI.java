@@ -8,5 +8,7 @@ import com.test.registry.entity.User;
 public interface UserDaoI {
 	
 	public User selectById(Integer id);
+	
+	public User login(User user);
 
 }

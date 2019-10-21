@@ -18,4 +18,13 @@ public class UserServiceImpl implements UserServiceI {
 		return userDao.selectById(id);
 	}
 
+	@Override
+	public boolean login(User user) {
+		User u = userDao.login(user);
+		if(u == null) {
+			return false;
+		}
+		return true;
+	}
+
 }
