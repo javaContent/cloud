@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.test.system.dao.UserDaoI;
-import com.test.system.entity.User;
+import com.test.system.entity.SysUser;
 import com.test.system.service.UserServiceI;
 
 
@@ -15,13 +15,13 @@ public class UserServiceImpl implements UserServiceI {
 	private UserDaoI userDao;
 	
 	@Override
-	public User selectById(Integer id) {
+	public SysUser selectById(Integer id) {
 		return userDao.selectById(id);
 	}
 
 	@Override
-	public User login(String username, String password) {
-		User u = userDao.login(username, password);
+	public SysUser login(String username, String password) {
+		SysUser u = userDao.login(username, password);
 		return u;
 	}
 

@@ -1,11 +1,11 @@
 package com.test.system.service;
 
-import com.test.system.entity.User;
+import com.test.system.entity.SysUser;
 
 public interface UserServiceI {
 	
-	public User selectById(Integer id);
+	public SysUser selectById(Integer id);
 	
-	public User login(String username, String password);
+	public SysUser login(String username, String password);
 
 }

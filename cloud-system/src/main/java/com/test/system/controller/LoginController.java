@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
 
-import com.test.system.entity.User;
+import com.test.system.entity.SysUser;
 import com.test.system.service.UserServiceI;
 import com.test.system.util.JwtUtil;
 import io.swagger.annotations.Api;
@@ -34,8 +34,8 @@ public class LoginController {
 	@ApiOperation(value = "登录")
 	@RequestMapping(value="", method = RequestMethod.POST)
 	@ResponseBody
-	public String login(@RequestBody @Valid User user) {
-		User userDO = service.login(user.getUserName(),  user.getPassword());
+	public String login(@RequestBody @Valid SysUser user) {
+		SysUser userDO = service.login(user.getUserName(),  user.getPassword());
 		String token = JwtUtil.createToken(userDO.getUserName());
         return token;
 	}

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.test.system.entity.User;
+import com.test.system.entity.SysUser;
 import com.test.system.service.UserServiceI;
 
 import io.swagger.annotations.Api;
@@ -27,7 +27,7 @@ public class SystemController {
 	@RequestMapping(value="getUserName", method = RequestMethod.GET)
 	@ResponseBody
 	public String login() {
-		User user = userService.selectById(1);
+		SysUser user = userService.selectById(1);
 		return user.getUserName();
 	}
 
