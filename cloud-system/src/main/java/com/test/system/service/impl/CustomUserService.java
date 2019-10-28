@@ -26,7 +26,7 @@ public class CustomUserService implements UserDetailsService {
         }
         SysRole role = new SysRole();
         role.setId(1L);
-        role.setName("admin");
+        role.setName("ROLE_ADMIN");
         List<SysRole> roles = new ArrayList<>();
         roles.add(role);
         user.setRoles(roles);

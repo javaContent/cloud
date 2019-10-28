@@ -82,7 +82,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // 对于获取token的rest api要允许匿名访问
                 .antMatchers("/auth/**").permitAll()
                 .antMatchers("/admin/**").hasIpAddress("127.0.0.1")
-//                .antMatchers("/admin/**").access("hasAuthority('ROLE_ADMIN')")
+                .antMatchers("/admin/**").access("hasAuthority('ROLE_ADMIN')")
+                
+                // swagger start
+                .antMatchers("/swagger-ui.html").permitAll()
+                .antMatchers("/swagger-resources/**").permitAll()
+                .antMatchers("/images/**").permitAll()
+                .antMatchers("/webjars/**").permitAll()
+                .antMatchers("/v2/api-docs").permitAll()
+                .antMatchers("/configuration/ui").permitAll()
+                .antMatchers("/configuration/security").permitAll()
+
+                
 //                .anyRequest().authenticated().and().formLogin().loginPage("/login")
 //                .failureUrl("/login?error").permitAll().and().logout().permitAll();
         // 除上面外的所有请求全部需要鉴权认证

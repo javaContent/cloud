@@ -12,21 +12,21 @@ import com.test.system.entity.Msg;
 @Controller
 public class HomeController {
 	
-	@RequestMapping("/")
-    public String index(Model model) {
+	@RequestMapping("/admin/index")
+	@ResponseBody
+    public Msg index() {
         Msg msg = new Msg("测试标题", "测试内容", "额外信息，只对管理员显示");
-        model.addAttribute("msg", msg);
-        return "index";
+        return msg;
     }
     
-//    @PreAuthorize("hasAuthority('ROLE_USER')")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
     @RequestMapping(value="/admin/test1")
     @ResponseBody
     public String adminTest1() {
         return "ROLE_USER";
     }
     
-//    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @RequestMapping("/admin/test2")
     @ResponseBody
     public String adminTest2() {
