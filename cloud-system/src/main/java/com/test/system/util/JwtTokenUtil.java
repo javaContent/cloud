@@ -27,7 +27,7 @@ public class JwtTokenUtil {
     private String secret = "mySecret";
  
 //    @Value("${jwt.expiration}")
-    private Long expiration = 100L;
+    private Long expiration = 1L;
  
     public String getUsernameFromToken(String token) {
         String username;

@@ -23,6 +23,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class SwaggerConfig extends WebMvcConfigurerAdapter{
 	
+	private String tokenHeader ="Authorization";
+	
 	@Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("swagger-ui.html")
@@ -37,7 +39,7 @@ public class SwaggerConfig extends WebMvcConfigurerAdapter{
 		//header accessToken 验证 配置
 	    ParameterBuilder tokenPar = new ParameterBuilder();
     	List<Parameter> pars = new ArrayList<Parameter>();
-    	tokenPar.name("accessToken").description("令牌").modelRef(new ModelRef("string")).parameterType("header").required(false).build();
+    	tokenPar.name(this.tokenHeader).description("令牌").modelRef(new ModelRef("string")).parameterType("header").required(false).build();
     	pars.add(tokenPar.build());
     	
         return new Docket(DocumentationType.SWAGGER_2)

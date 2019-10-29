@@ -58,5 +58,6 @@
     	<module>cloud-registry</module>
     	<module>cloud-configserver</module>
     	<module>cloud-system</module>
+    	<module>cloud-zuul</module>
     </modules>
 </project>

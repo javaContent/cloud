@@ -14,6 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.test.system.entity.SysUser;
 import com.test.system.service.AuthService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
+@Api(value = "用户登录管理")
 @RestController
 public class AuthController {
 	
@@ -22,18 +26,17 @@ public class AuthController {
     @Autowired
     private AuthService authService;
  
+    @ApiOperation(value = "登录")
     @RequestMapping(value = "/auth/login", method = RequestMethod.POST)
-    public ResponseEntity<?> createAuthenticationToken(
-            String username,String password
-    ) throws AuthenticationException{
-        //  @RequestBody JwtAuthenticationRequest authenticationRequest
+    public ResponseEntity<?> createAuthenticationToken(String username,String password) 
+    		throws AuthenticationException{
         final String token = authService.login(username,password);
- 
         // Return the token
 //        return ResponseEntity.ok(new JwtAuthenticationResponse(token));
         return ResponseEntity.ok(token);
     }
  
+    @ApiOperation(value = "刷新token")
     @RequestMapping(value = "/auth/refresh", method = RequestMethod.GET)
     public ResponseEntity<?> refreshAndGetAuthenticationToken(
             HttpServletRequest request) throws AuthenticationException{
@@ -47,6 +50,7 @@ public class AuthController {
         }
     }
  
+    @ApiOperation(value = "注册")
     @RequestMapping(value = "auth/register", method = RequestMethod.POST)
     public SysUser register(@RequestBody SysUser addedUser) throws AuthenticationException{
         return authService.register(addedUser);
