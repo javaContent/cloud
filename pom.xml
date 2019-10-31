@@ -59,5 +59,7 @@
     	<module>cloud-configserver</module>
     	<module>cloud-system</module>
     	<module>cloud-zuul</module>
+    	<module>common</module>
+    	<module>cloud-system-api</module>
     </modules>
 </project>

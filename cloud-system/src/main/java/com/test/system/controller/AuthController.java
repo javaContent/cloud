@@ -55,5 +55,11 @@ public class AuthController {
     public SysUser register(@RequestBody SysUser addedUser) throws AuthenticationException{
         return authService.register(addedUser);
     }
+    
+    @ApiOperation(value = "是否登录")
+    @RequestMapping(value = "auth/isLogin", method = RequestMethod.POST)
+    public Boolean isLogin() throws AuthenticationException{
+        return true;
+    }
 
 }

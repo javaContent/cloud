@@ -1,6 +1,5 @@
 package com.test.system.filter;
 
-
 import java.io.IOException;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -16,17 +15,17 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.test.common.constant.CommonConst;
 import com.test.system.util.JwtTokenUtil;
-
 
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 	
 	@Autowired
     private UserDetailsService userDetailsService;
  
-    private String tokenHeader ="Authorization";
+//    private String tokenHeader ="Authorization";
  
-    private String tokenHead ="Bearer";
+//    private String tokenHead ="Bearer";
  
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
@@ -35,9 +34,9 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             HttpServletRequest request,
             HttpServletResponse response,
             FilterChain chain) throws ServletException, IOException {
-        String authHeader = request.getHeader(this.tokenHeader);
-        if (authHeader != null && authHeader.startsWith(tokenHead)) {
-            final String authToken = authHeader.substring(tokenHead.length()); // The part after "Bearer "
+        String authHeader = request.getHeader(CommonConst.ACCESS_TOCKEN);
+        if (authHeader != null && authHeader.startsWith(CommonConst.tokenHead)) {
+            final String authToken = authHeader.substring(CommonConst.tokenHead.length()); // The part after "Bearer "
             String username = jwtTokenUtil.getUsernameFromToken(authToken);
             logger.info("checking authentication " + username);
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
