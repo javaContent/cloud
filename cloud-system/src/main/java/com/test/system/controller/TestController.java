@@ -7,8 +7,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.test.system.entity.Result;
-import com.test.system.helper.RedisClient;
+import com.test.common.entity.Result;
+//import com.test.system.helper.RedisClient;
+import com.test.frame.helper.RedisClient;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

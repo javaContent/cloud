@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import com.test.system.entity.SysUser;
+import com.test.system.api.entity.SysUser;
+
+//import com.test.system.entity.SysUser;
 
 import java.io.Serializable;
 import java.util.Date;

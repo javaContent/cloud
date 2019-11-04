@@ -34,6 +34,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             HttpServletRequest request,
             HttpServletResponse response,
             FilterChain chain) throws ServletException, IOException {
+    	UserDetails userDetail = (UserDetails) request.getSession().getAttribute(CommonConst.SESSION_USER);
         String authHeader = request.getHeader(CommonConst.ACCESS_TOCKEN);
         if (authHeader != null && authHeader.startsWith(CommonConst.tokenHead)) {
             final String authToken = authHeader.substring(CommonConst.tokenHead.length()); // The part after "Bearer "

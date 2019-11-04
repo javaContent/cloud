@@ -29,6 +29,12 @@
 			<artifactId>spring-cloud-starter-feign</artifactId>
 			<version>1.4.0.RELEASE</version>
 		</dependency>
+		
+		<!-- security认证 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>junit</groupId>

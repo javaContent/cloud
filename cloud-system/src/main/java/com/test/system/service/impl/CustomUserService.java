@@ -9,9 +9,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import com.test.system.api.entity.SysRole;
+import com.test.system.api.entity.SysUser;
 import com.test.system.dao.UserDaoI;
-import com.test.system.entity.SysRole;
-import com.test.system.entity.SysUser;
+//import com.test.system.entity.SysRole;
+//import com.test.system.entity.SysUser;
 
 public class CustomUserService implements UserDetailsService {
 	

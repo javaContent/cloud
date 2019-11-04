@@ -3,7 +3,9 @@ package com.test.system.dao;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import com.test.system.entity.SysUser;
+import com.test.system.api.entity.SysUser;
+
+//import com.test.system.entity.SysUser;
 
 
 @Mapper

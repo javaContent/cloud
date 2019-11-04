@@ -3,8 +3,9 @@ package com.test.system.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.test.system.api.entity.SysUser;
 import com.test.system.dao.UserDaoI;
-import com.test.system.entity.SysUser;
+//import com.test.system.entity.SysUser;
 import com.test.system.service.UserServiceI;
 
 

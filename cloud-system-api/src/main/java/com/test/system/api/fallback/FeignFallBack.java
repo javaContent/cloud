@@ -8,7 +8,7 @@ import com.test.system.api.service.LoginService;
 public class FeignFallBack implements LoginService {
 
 	@Override
-	public Boolean isLogin(String accessToken) {
+	public Boolean isLogin() {
 		return false;
 	}
 	

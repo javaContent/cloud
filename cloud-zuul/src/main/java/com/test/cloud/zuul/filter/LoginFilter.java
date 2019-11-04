@@ -4,13 +4,20 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
 import com.test.common.constant.CommonConst;
+import com.test.system.api.service.LoginService;
 
+@Component
 public class LoginFilter extends ZuulFilter{
+	
+	@Autowired
+	LoginService loginService;
 
 	@Override
 	public boolean shouldFilter() {
@@ -24,16 +31,20 @@ public class LoginFilter extends ZuulFilter{
         RequestContext ctx = RequestContext.getCurrentContext();
         //从上下文中获取request对象
         HttpServletRequest request = ctx.getRequest();
+        if(loginService.isLogin()) {//是否登录
+        	System.out.println("已经登录");
+        }
+        
         //从请求中获取token
 //        String token = request.getParameter(CommonConst.ACCESS_TOCKEN);
-        String token = request.getHeader(CommonConst.ACCESS_TOCKEN);
-        //判断
-        if(StringUtils.isEmpty(token)){
-            //没有token，拦截
-            ctx.setSendZuulResponse(false);
-            //返回401状态码，可以考虑重定向到登录页
-            ctx.setResponseStatusCode(HttpStatus.SC_UNAUTHORIZED);
-        }
+//        String token = request.getHeader(CommonConst.ACCESS_TOCKEN);
+//        //判断
+//        if(StringUtils.isEmpty(token)){
+//            //没有token，拦截
+//            ctx.setSendZuulResponse(false);
+//            //返回401状态码，可以考虑重定向到登录页
+//            ctx.setResponseStatusCode(HttpStatus.SC_UNAUTHORIZED);
+//        }
         //校验通过，可以考虑把用户信息放入上下文，继续向后执行
         return null;
 	}

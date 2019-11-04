@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.test.system.entity.SysUser;
+import com.test.system.api.entity.SysUser;
+//import com.test.system.entity.SysUser;
 import com.test.system.service.UserServiceI;
 
 import io.swagger.annotations.Api;

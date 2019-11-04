@@ -61,5 +61,7 @@
     	<module>cloud-zuul</module>
     	<module>common</module>
     	<module>cloud-system-api</module>
+    	<!-- 公用依赖 -->
+    	<module>cloud-frame</module>
     </modules>
 </project>

@@ -1,6 +1,8 @@
 package com.test.system.service;
 
-import com.test.system.entity.SysUser;
+import com.test.system.api.entity.SysUser;
+
+//import com.test.system.entity.SysUser;
 
 public interface UserServiceI {
 	

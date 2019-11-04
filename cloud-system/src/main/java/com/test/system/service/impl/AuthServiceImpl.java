@@ -2,6 +2,8 @@ package com.test.system.service.impl;
 
 import java.util.Date;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -11,9 +13,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import com.test.common.constant.CommonConst;
+import com.test.system.api.entity.SysUser;
 import com.test.system.dao.UserDaoI;
-import com.test.system.entity.SysUser;
+//import com.test.system.entity.SysUser;
 import com.test.system.service.AuthService;
 import com.test.system.util.JwtTokenUtil;
 
@@ -30,7 +36,7 @@ public class AuthServiceImpl implements AuthService {
     private UserDaoI userDao;
  
 //    @Value("${jwt.tokenHead}")
-    private String tokenHead = "Bearer";
+//    private String tokenHead = "Bearer";
  
  
     @Override
@@ -56,6 +62,10 @@ public class AuthServiceImpl implements AuthService {
 	        SecurityContextHolder.getContext().setAuthentication(authentication);
 	        // Reload password post-security so we can generate token
 	        final UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+	        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+	        
+	        request.getSession().setAttribute(CommonConst.SESSION_USER,userDetails);
+	        
 	        final String token = jwtTokenUtil.generateToken(userDetails);
 	        return token;
     	} catch (Exception e) {
@@ -66,7 +76,7 @@ public class AuthServiceImpl implements AuthService {
  
     @Override
     public String refresh(String oldToken) {
-        final String token = oldToken.substring(tokenHead.length());
+        final String token = oldToken.substring(CommonConst.tokenHead.length());
         String username = jwtTokenUtil.getUsernameFromToken(token);
         SysUser user = (SysUser) userDetailsService.loadUserByUsername(username);
         if (jwtTokenUtil.canTokenBeRefreshed(token, user.getLastPasswordResetDate())){

@@ -11,6 +11,6 @@ import com.test.system.api.fallback.FeignFallBack;
 public interface LoginService {
 	
 	@RequestMapping(value = "/auth/isLogin",method=RequestMethod.GET)
-    public Boolean isLogin(@RequestHeader(CommonConst.ACCESS_TOCKEN)  String accessToken);
+    public Boolean isLogin();
 
 }

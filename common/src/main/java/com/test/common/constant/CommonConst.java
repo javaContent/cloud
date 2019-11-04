@@ -5,5 +5,7 @@ public interface CommonConst {
 	String ACCESS_TOCKEN = "Authorization";
 	
 	String tokenHead ="Bearer";
+	
+	String SESSION_USER = "sessionUser";
 
 }
