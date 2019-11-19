@@ -4,13 +4,13 @@ import javax.servlet.http.HttpServletRequest;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.test.common.constant.CommonConst;
 import com.test.common.entity.Result;
 import com.test.system.api.entity.SysUser;
 //import com.test.system.entity.SysUser;
@@ -23,8 +23,6 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 public class AuthController {
 	
-    private String tokenHeader = "Authorization";
- 
     @Autowired
     private AuthService authService;
  
@@ -40,7 +38,7 @@ public class AuthController {
     @RequestMapping(value = "/auth/refresh", method = RequestMethod.GET)
     public Result<?> refreshAndGetAuthenticationToken(
             HttpServletRequest request) throws AuthenticationException{
-        String token = request.getHeader(tokenHeader);
+        String token = request.getHeader(CommonConst.ACCESS_TOCKEN);
         String refreshedToken = authService.refresh(token);
         if(refreshedToken == null) {
             return Result.err();

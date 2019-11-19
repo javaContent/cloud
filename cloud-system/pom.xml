@@ -19,17 +19,6 @@
 	</properties>
 	<dependencies>
 		
-		<!-- <dependency>
-			<groupId>com.test</groupId>
-			<artifactId>common</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>com.test</groupId>
-			<artifactId>cloud-system-api</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency> -->
 		
 		<dependency>
 			<groupId>com.test</groupId>

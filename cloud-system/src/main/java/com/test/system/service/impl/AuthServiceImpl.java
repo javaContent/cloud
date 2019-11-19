@@ -20,6 +20,7 @@ import com.test.common.constant.CommonConst;
 import com.test.common.enums.ErrorCodeEnum;
 import com.test.common.exception.BusinessException;
 import com.test.frame.helper.RedisClient;
+import com.test.frame.helper.UserInfoHelper;
 import com.test.system.api.entity.SysUser;
 import com.test.system.dao.UserDaoI;
 import com.test.system.entity.AuthUser;
@@ -39,7 +40,7 @@ public class AuthServiceImpl implements AuthService {
 	@Autowired
     private UserDaoI userDao;
 	@Autowired
-	RedisClient redisClient;
+	UserInfoHelper userInfoHelper;
  
     @Override
     public SysUser register(SysUser userToAdd) {
@@ -66,11 +67,11 @@ public class AuthServiceImpl implements AuthService {
 	        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 	        
 	        request.getSession().setAttribute(CommonConst.SESSION_USER,authUser);
-	        SysUser user = new SysUser();
-	        BeanUtils.copyProperties(authUser, user);
+	        SysUser sysUser = new SysUser();
+	        BeanUtils.copyProperties(authUser, sysUser);
 	        
 	        final String token = jwtTokenUtil.generateToken(authUser);
-	        redisClient.setValue(CommonConst.SESSION_USER + "_" +token, user, CommonConst.SESSION_TIME);
+	        userInfoHelper.setUserByToken(token, sysUser);
 	        
 	        return token;
     	} catch (Exception e) {

@@ -42,7 +42,7 @@ public class Result<T>  implements Serializable {
 		Result<T> vo = new Result<T>();
 		vo.setCode(500);
 		vo.setMessage("请求失败");
-		vo.setSuccess(true);
+		vo.setSuccess(false);
 		return vo;
 	}
 	
@@ -50,7 +50,15 @@ public class Result<T>  implements Serializable {
 		Result<T> vo = new Result<T>();
 		vo.setCode(500);
 		vo.setMessage(message);
-		vo.setSuccess(true);
+		vo.setSuccess(false);
+		return vo;
+	}
+	
+	public static <T> Result<T> err(Integer code,String message) {
+		Result<T> vo = new Result<T>();
+		vo.setCode(code);
+		vo.setMessage(message);
+		vo.setSuccess(false);
 		return vo;
 	}
 
