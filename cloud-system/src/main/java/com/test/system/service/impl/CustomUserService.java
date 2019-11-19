@@ -3,17 +3,16 @@ package com.test.system.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.test.system.api.entity.SysRole;
 import com.test.system.api.entity.SysUser;
 import com.test.system.dao.UserDaoI;
-//import com.test.system.entity.SysRole;
-//import com.test.system.entity.SysUser;
+import com.test.system.entity.AuthUser;
 
 public class CustomUserService implements UserDetailsService {
 	
@@ -33,10 +32,13 @@ public class CustomUserService implements UserDetailsService {
         roles.add(role);
         user.setRoles(roles);
         System.out.println("s:"+s);
-        System.out.println("username:"+user.getUsername()+";password:"+user.getPassword());
+        System.out.println("username:"+user.getUserName()+";password:"+user.getPassword());
         System.out.println("size:"+user.getRoles().size());
         System.out.println("role:"+user.getRoles().get(0).getName());
-        return user;
+        
+        AuthUser authUser = new AuthUser();
+        BeanUtils.copyProperties(user, authUser);
+        return authUser;
     }
 
 }

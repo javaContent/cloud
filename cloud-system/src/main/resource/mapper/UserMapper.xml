@@ -4,7 +4,7 @@
 <mapper namespace="com.test.system.dao.UserDaoI">
 
 	<!-- 通用查询映射结果 -->
-	<resultMap id="BaseResultMap" type="com.test.system.entity.SysUser">
+	<resultMap id="BaseResultMap" type="com.test.system.api.entity.SysUser">
 		<id column="id" property="id"/>
 		<id column="userName" property="user_name"/>
 		<id column="password" property="password"/>
@@ -15,21 +15,21 @@
 		id,user_name,password
 	</sql>
 	
-	<select id="selectById" resultType="com.test.system.entity.SysUser">
+	<select id="selectById" resultType="com.test.system.api.entity.SysUser">
 		select id,user_name as userName,password from user where id = #{id}
 	</select>
 	
-	<select id="login" resultType="com.test.system.entity.SysUser">
+	<select id="login" resultType="com.test.system.api.entity.SysUser">
 		select id,user_name as userName,password from user 
 		where user_name = #{userName} 
 		and password = #{password} 
 	</select>
 	
-	<select id="findByUserName" resultType="com.test.system.entity.SysUser">
+	<select id="findByUserName" resultType="com.test.system.api.entity.SysUser">
 		select id,user_name as userName,password,last_password_reset_date as lastPasswordResetDate from user where user_name = #{userName}
 	</select>
 	
-	<insert id="save" keyProperty="id" parameterType="com.test.system.entity.SysUser">
+	<insert id="save" keyProperty="id" parameterType="com.test.system.api.entity.SysUser">
 		insert into user (user_name,password) values (#{userName} ,#{password} );
 	</insert>
 

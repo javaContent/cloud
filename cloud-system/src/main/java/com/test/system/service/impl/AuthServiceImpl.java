@@ -4,12 +4,12 @@ import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,8 +17,12 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.test.common.constant.CommonConst;
+import com.test.common.enums.ErrorCodeEnum;
+import com.test.common.exception.BusinessException;
+import com.test.frame.helper.RedisClient;
 import com.test.system.api.entity.SysUser;
 import com.test.system.dao.UserDaoI;
+import com.test.system.entity.AuthUser;
 //import com.test.system.entity.SysUser;
 import com.test.system.service.AuthService;
 import com.test.system.util.JwtTokenUtil;
@@ -34,14 +38,12 @@ public class AuthServiceImpl implements AuthService {
     private JwtTokenUtil jwtTokenUtil;
 	@Autowired
     private UserDaoI userDao;
- 
-//    @Value("${jwt.tokenHead}")
-//    private String tokenHead = "Bearer";
- 
+	@Autowired
+	RedisClient redisClient;
  
     @Override
     public SysUser register(SysUser userToAdd) {
-        final String username = userToAdd.getUsername();
+        final String username = userToAdd.getUserName();
         if(userDao.findByUserName(username)!=null) {
             return null;
         }
@@ -49,7 +51,6 @@ public class AuthServiceImpl implements AuthService {
         final String rawPassword = userToAdd.getPassword();
         userToAdd.setPassword(encoder.encode(rawPassword));
         userToAdd.setLastPasswordResetDate(new Date());
-//        userToAdd.setRoles(asList("ROLE_USER"));
         return userDao.save(userToAdd);
     }
  
@@ -61,28 +62,31 @@ public class AuthServiceImpl implements AuthService {
 	        final Authentication authentication = authenticationManager.authenticate(upToken);
 	        SecurityContextHolder.getContext().setAuthentication(authentication);
 	        // Reload password post-security so we can generate token
-	        final UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+	        final AuthUser authUser = (AuthUser) userDetailsService.loadUserByUsername(username);
 	        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 	        
-	        request.getSession().setAttribute(CommonConst.SESSION_USER,userDetails);
+	        request.getSession().setAttribute(CommonConst.SESSION_USER,authUser);
+	        SysUser user = new SysUser();
+	        BeanUtils.copyProperties(authUser, user);
 	        
-	        final String token = jwtTokenUtil.generateToken(userDetails);
+	        final String token = jwtTokenUtil.generateToken(authUser);
+	        redisClient.setValue(CommonConst.SESSION_USER + "_" +token, user, CommonConst.SESSION_TIME);
+	        
 	        return token;
     	} catch (Exception e) {
-			e.printStackTrace();
+			throw new BusinessException(ErrorCodeEnum.LOGIN_ERR, "登陆失败");
 		}
-    	return null;
     }
  
     @Override
     public String refresh(String oldToken) {
         final String token = oldToken.substring(CommonConst.tokenHead.length());
         String username = jwtTokenUtil.getUsernameFromToken(token);
-        SysUser user = (SysUser) userDetailsService.loadUserByUsername(username);
+        AuthUser user = (AuthUser) userDetailsService.loadUserByUsername(username);
         if (jwtTokenUtil.canTokenBeRefreshed(token, user.getLastPasswordResetDate())){
             return jwtTokenUtil.refreshToken(token);
         }
-        return null;
+        throw new BusinessException(ErrorCodeEnum.LOGIN_ERR, "token刷新失败");
     }
 
 }

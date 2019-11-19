@@ -19,10 +19,22 @@ public class LoginFilter extends ZuulFilter{
 	@Autowired
 	LoginService loginService;
 
+	// 返回true 代表过滤器生效
 	@Override
 	public boolean shouldFilter() {
-		//返回true 代表过滤器生效
-        return true;
+		RequestContext requestContext = RequestContext.getCurrentContext();
+		HttpServletRequest  request = requestContext.getRequest();
+		System.out.println(request.getRequestURI()); ///apigateway/product/api/v1/product/list
+		//System.out.println(request.getRequestURL()); //http://localhost:9000/apigateway/product/api/v1/product/list
+		//ACL
+		if (CommonConst.LOGIN_URL.equalsIgnoreCase(request.getRequestURI()) 
+				|| CommonConst.REFRESH_URL.equalsIgnoreCase(request.getRequestURI()) 
+				|| CommonConst.REGISTER_URL.equalsIgnoreCase(request.getRequestURI())
+				|| CommonConst.OUTLOGIN_URL.equalsIgnoreCase(request.getRequestURI())
+				|| "/registry/user/getName".equalsIgnoreCase(request.getRequestURI())){
+			return false;
+		}
+		return true;
 	}
 
 	@Override

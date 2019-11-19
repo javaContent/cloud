@@ -9,10 +9,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import com.test.system.api.entity.SysUser;
+import com.test.system.entity.AuthUser;
 
 //import com.test.system.entity.SysUser;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,12 +25,53 @@ public class JwtTokenUtil {
     private static final String CLAIM_KEY_USERNAME = "sub";
     private static final String CLAIM_KEY_CREATED = "created";
  
-//    @Value("${jwt.secret}")
     private String secret = "mySecret";
  
-//    @Value("${jwt.expiration}")
-    private Long expiration = 1L;
- 
+    /**
+     * 有效时间 （分钟）
+     */
+    private Long expiration = 100L;
+    
+    public static void main(String[] args) {
+    	JwtTokenUtil jwtTokenUtil = new JwtTokenUtil();
+    	AuthUser authUser = new AuthUser();
+    	authUser.setUserName("ysf123");
+    	String token = jwtTokenUtil.generateToken(authUser);
+    	System.out.println(token);
+    	String userName = jwtTokenUtil.getUsernameFromToken(token);
+    	System.out.println(userName);
+    	
+    	Date date = jwtTokenUtil.getCreatedDateFromToken(token);
+    	System.out.println(date);
+    	
+    	Date expirationDate = jwtTokenUtil.getExpirationDateFromToken(token);
+    	System.out.println(expirationDate);
+	}
+    
+    /**
+     * 生成token
+     * @param userDetails
+     * @return
+     */
+    public String generateToken(UserDetails userDetails) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put(CLAIM_KEY_USERNAME, userDetails.getUsername());
+        claims.put(CLAIM_KEY_CREATED, new Date());
+        return generateToken(claims);
+    }
+    
+    String generateToken(Map<String, Object> claims) {
+        return Jwts.builder()
+                .setClaims(claims)
+                .setExpiration(generateExpirationDate())
+                .signWith(SignatureAlgorithm.HS512, secret)
+                .compact();
+    }
+    /**
+     * 根据token获取username
+     * @param token
+     * @return
+     */
     public String getUsernameFromToken(String token) {
         String username;
         try {
@@ -41,7 +82,11 @@ public class JwtTokenUtil {
         }
         return username;
     }
- 
+    /**
+     * 获取token生成时间
+     * @param token
+     * @return
+     */
     public Date getCreatedDateFromToken(String token) {
         Date created;
         try {
@@ -52,7 +97,11 @@ public class JwtTokenUtil {
         }
         return created;
     }
- 
+    /**
+     * 获取token过期时间
+     * @param token
+     * @return
+     */
     public Date getExpirationDateFromToken(String token) {
         Date expiration;
         try {
@@ -78,40 +127,39 @@ public class JwtTokenUtil {
         return claims;
     }
  
+    /**
+     * 有效时间
+     * @return
+     */
     private Date generateExpirationDate() {
         return new Date(System.currentTimeMillis() + expiration * 60 * 1000);
     }
  
+    /**
+     * 校验token是否过期
+     * @param token
+     * @return
+     */
     private Boolean isTokenExpired(String token) {
         final Date expiration = getExpirationDateFromToken(token);
         return expiration.before(new Date());
     }
  
+    /**
+     * token有效期间是否有 修改密码
+     * @param created
+     * @param lastPasswordReset
+     * @return
+     */
     private Boolean isCreatedBeforeLastPasswordReset(Date created, Date lastPasswordReset) {
         return (lastPasswordReset != null && created.before(lastPasswordReset));
     }
  
-    public String generateToken(UserDetails userDetails) {
-        Map<String, Object> claims = new HashMap<>();
-        claims.put(CLAIM_KEY_USERNAME, userDetails.getUsername());
-        claims.put(CLAIM_KEY_CREATED, new Date());
-        return generateToken(claims);
-    }
- 
-    String generateToken(Map<String, Object> claims) {
-        return Jwts.builder()
-                .setClaims(claims)
-                .setExpiration(generateExpirationDate())
-                .signWith(SignatureAlgorithm.HS512, secret)
-                .compact();
-    }
- 
-    public Boolean canTokenBeRefreshed(String token, Date lastPasswordReset) {
-        final Date created = getCreatedDateFromToken(token);
-        return !isCreatedBeforeLastPasswordReset(created, lastPasswordReset)
-                && !isTokenExpired(token);
-    }
- 
+    /**
+     * 刷新token
+     * @param token
+     * @return
+     */
     public String refreshToken(String token) {
         String refreshedToken;
         try {
@@ -123,14 +171,31 @@ public class JwtTokenUtil {
         }
         return refreshedToken;
     }
+    
+    /**
+     * 判断是否可以刷新token
+     * @param token
+     * @param lastPasswordReset
+     * @return
+     */
+    public Boolean canTokenBeRefreshed(String token, Date lastPasswordReset) {
+        final Date created = getCreatedDateFromToken(token);
+        return !isCreatedBeforeLastPasswordReset(created, lastPasswordReset)
+                && !isTokenExpired(token);
+    }
  
+    /**
+     * 验证token
+     * @param token
+     * @param userDetails
+     * @return
+     */
     public Boolean validateToken(String token, UserDetails userDetails) {
-        SysUser user = (SysUser) userDetails;
+    	AuthUser user = (AuthUser) userDetails;
         final String username = getUsernameFromToken(token);
         final Date created = getCreatedDateFromToken(token);
-//        final Date expiration = getExpirationDateFromToken(token);
         return (
-                username.equals(user.getUsername())
+                username.equals(user.getUserName())
                         && !isTokenExpired(token)
                         && !isCreatedBeforeLastPasswordReset(created, user.getLastPasswordResetDate()));
     }
