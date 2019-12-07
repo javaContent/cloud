@@ -1,4 +1,4 @@
-package com.test.system.config;
+package com.test.frame.config;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +11,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 import com.test.common.constant.CommonConst;
 
+import io.swagger.annotations.ApiOperation;
 import springfox.documentation.service.Parameter;
 import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
@@ -23,7 +24,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableWebMvc
 @EnableSwagger2
-public class SwaggerConfig extends WebMvcConfigurerAdapter{
+public class SwaggerConfiguration extends WebMvcConfigurerAdapter{
 	
 //	private String tokenHeader ="Authorization";
 	
@@ -47,10 +48,12 @@ public class SwaggerConfig extends WebMvcConfigurerAdapter{
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
 //                .apis(RequestHandlerSelectors.any())
-                .apis(RequestHandlerSelectors.basePackage("com.test.system.controller"))
+//                .apis(RequestHandlerSelectors.basePackage("com.test.system.controller"))
+                .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class)) //只扫描有API 注解的
                 .paths(PathSelectors.any())
                 .build()
                 .globalOperationParameters(pars);
     }
 
 }
+

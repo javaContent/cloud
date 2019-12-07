@@ -1,14 +1,11 @@
 package com.test.system.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.test.common.entity.Result;
-//import com.test.system.helper.RedisClient;
 import com.test.frame.helper.RedisClient;
 
 import io.swagger.annotations.Api;

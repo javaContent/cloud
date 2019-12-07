@@ -1,9 +1,15 @@
 package com.test.system.api.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class SysUser /*implements UserDetails*/ {
+public class SysUser implements Serializable/*implements UserDetails*/ {
+	
+	/**
+	 *  @Fields serialVersionUID :
+	 */
+	private static final long serialVersionUID = -8971529096677356964L;
 	
 	/*user id*/
     private String id;

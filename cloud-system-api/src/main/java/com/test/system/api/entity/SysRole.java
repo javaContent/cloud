@@ -1,6 +1,13 @@
 package com.test.system.api.entity;
 
-public class SysRole {
+import java.io.Serializable;
+
+public class SysRole implements Serializable {
+	
+	/**
+	 *  @Fields serialVersionUID :
+	 */
+	private static final long serialVersionUID = -8971529096677356965L;
 	
 	private Long id;
     private String name;
