@@ -3,6 +3,7 @@ package com.test.system.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.test.system.dao.query.QueryUserDaoI;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,17 +12,16 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.test.system.api.entity.SysRole;
 import com.test.system.api.entity.SysUser;
-import com.test.system.dao.UserDaoI;
 import com.test.system.entity.AuthUser;
 
 public class CustomUserService implements UserDetailsService {
-	
-	@Autowired
-	UserDaoI userDao;
+
+    @Autowired
+    private QueryUserDaoI queryUserDao;
 	
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        SysUser user = userDao.findByUserName(s);
+        SysUser user = queryUserDao.findByUserName(s);
         if (user == null) {
             throw new UsernameNotFoundException("用户名不存在");
         }
